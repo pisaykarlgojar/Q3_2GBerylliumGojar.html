@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>View Club Sign-Ups</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #eef;
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid #999;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background: #4e8cbc;
+        color: white;
+    }
+
+    .message {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 8px 12px;
+    }
+</style>
+
+<script>
+    let allSignups = [];
+
+    function loadSignups() {
+        const data = localStorage.getItem("clubSignups");
+
+        if (!data) {
+            document.getElementById("output").innerHTML =
+                "<p class='message'>No sign-ups found.</p>";
+            return;
+        }
+
+        allSignups = JSON.parse(data);
+        displaySignups("ALL");
+    }
+
+    function displaySignups(club) {
+        let filtered = allSignups;
+
+        if (club !== "ALL") {
+            filtered = allSignups.filter(s => s.club === club);
+        }
+
+        if (filtered.length === 0) {
+            document.getElementById("output").innerHTML =
+                "<p class='message'>No sign-ups for this club.</p>";
+            document.getElementById("total").textContent = "Total Sign-ups: 0";
+            return;
+        }
+
+        let html = `
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Club</th>
+            </tr>`;
+
+        filtered.forEach(s => {
+            html += `
+            <tr>
+                <td>${s.studentId}</td>
+                <td>${s.fullName}</td>
+                <td>${s.grade}</td>
+                <td>${s.club}</td>
+            </tr>`;
+        });
+
+        html += "</table>";
+
+        document.getElementById("output").innerHTML = html;
+        document.getElementById("total").textContent =
+            "Total Sign-ups: " + filtered.length;
+    }
+</script>
+</head>
+
+<body onload="loadSignups()">
+
+<h2>Club Sign-Ups</h2>
+
+<label>
+Filter by Club:
+<select onchange="displaySignups(this.value)">
+<option value="ALL">ALL</option>
+<option value=""> Select Club</option>
+<option value="acts">ACTS (Acts Community Transformation)</option>
+<option value="aksis">Aksis</option>
+<option value="alianti">Alianti</option>
+<option value="alyabo">Alyabo</option>
+<option value="art">Art Club</option>
+<option value="astrosoc">Astrosoc</option>
+<option value="atom">ATOM</option>
+<option value="bake">Bake Club</option>
+<option value="balamesa">Balamesa</option>
+<option value="bravura">Bravura</option>
+<option value="buhat">Buhat</option>
+<option value="care">CARE</option>
+<option value="computron">Computron</option>
+<option value="exposure">Exposure</option>
+<option value="flux">Flux</option>
+<option value="habitat">Habitat for Humanity</option>
+<option value="himigagham">Himig Agham</option>
+<option value="invictus">Invictus</option>
+<option value="kamalayan">Kamalayan</option>
+<option value="kislap">Kislap</option>
+<option value="laab">Laab</option>
+<option value="labuyo">Labuyo</option>
+<option value="likha">Likha</option>
+<option value="math">Math Club</option>
+<option value="orient">Orient</option>
+<option value="outdoor">Outdoor Club</option>
+<option value="pallastro">Pallastro</option>
+<option value="physicsyhs">Physics Youth Honor Society/PYHS</option>
+<option value="pisayxyz">Pisay.XYZ</option>
+<option value="sagala">SaGala</option>
+<option value="samapi">SAMAPI</option>
+<option value="sarsplus">SARS+</option>
+<option value="sca">SCA (Student Catholic Action)</option>
+<option value="sert">SERT</option>
+<option value="sightlines">Sightlines</option>
+<option value="silakbo">Silakbo</option>
+<option value="sociospiritual">Socio-Spiritual Clubs</option>
+<option value="sports">Sports Clubs</option>
+<option value="stem">STEM Clubs</option>
+<option value="volant">Volant</option>
+</select>
+</label>
+
+<p id="total">Total Sign-ups: 0</p>
+
+<div id="output"></div>
+
+<button onclick="window.location.href='3rdGradedExercise.html'">Back to Sign-Up Page</button>
+
+</body>
+</html>
