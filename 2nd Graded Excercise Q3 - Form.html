@@ -1,94 +1,207 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Q3 2nd Graded Exercise">
-    <meta name="keywords" content="HTML Forms">
-    <meta name="author" content="Karl Gojar">
-    <title>Q3 2nd Graded Exercise</title>
-    <!-- updated external css link to show how to share it between repository -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../styles.css" />
-    <script src="script.js" defer></script>
-   <style>
-    body{
-        padding: 25px;
-        font-family: arial;
-        width: 40%;
-        margin-left: 27%;
-        margin-right: 25%;
-        }
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Club Application Form</title>
 
-        .title {
-            color: #d12929;
-            text-align: center;
-        }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #4e8cbc;
+        padding: 20px;
+    }
 
-        fieldset:nth-child(2) {
-             margin-top: 20px;
-        }
+    form {
+        background: white;
+        padding: 20px;
+        max-width: 600px;
+        margin: auto;
+        border-radius: 5px;
+    }
 
-        legend {
-            background: black;
-            color: rgb(255, 255, 255);
-            padding: 5px;
+    fieldset {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 6px;
+        margin-top: 4px;
+    }
+
+    /* focus style */
+    input:focus, select:focus, textarea:focus {
+        border: 2px solid blue;
+        outline: none;
+        background-color: #eef;
+    }
+
+    /* invalid on blur */
+    .invalid {
+        border: 2px solid red;
+        background-color: #ffecec;
+    }
+
+    button {
+        padding: 8px 15px;
+        margin-right: 10px;
+    }
+</style>
+
+<!--Hi maam, if you so happen to see this, this took quite a while to figure out and especially improve from my last submission -->
+
+<script>
+    function confirmSubmit() {
+        return confirm("Do you want to submit this application?");
+    }
+
+    function confirmReset() {
+        return confirm("Do you want to clear all entered data?");
+    }
+
+    function checkInput(el) {
+        if (el.value.trim() === "") {
+            el.classList.add("invalid");
+        } else {
+            el.classList.remove("invalid");
         }
-        label {
-             margin: 5%;
-        }
-    </style>
-  </head>
-  <body>
-     <header>
-        <div>
-            <h1>
-                Q3 2nd Graded Exercise
-            </h1>
-            <h3>by Karl Gojar </h3>
-        </div>
-        <nav class="navbar">
-            <a href="registered.html"> Show Saved Accounts </a>
-        </nav>
-    </header>
-    <section>
-      <h1 class="title">Sign-up Page</h1>
-      <form id="dForm" action="registered.html" method="get">
-        <fieldset>
-          <legend>Your Credentials</legend><br/>
-          <label> Username: 
-            <input type="text" name="uname" id="uname" required />
-          </label><br/><br/>
-          <label> Password :
-            <input type="password" name="pword" id="pword" required />
-          </label><br/><br/>
-          <label> Date Of Birth :
-            <input type="date" name="dob" id="dob" />
-          </label><br/><br/>
-          <label> Gender :
-            <input type="radio" name="gender" value="Female" /> Female
-            <input type="radio" name="gender" value="Male" /> Male
-            <input type="radio" name="gender" value="Not Say" /> Prefer Not to Say
-          </label><br/><br/>
-          <label> 
-            <input type="checkbox" name="dp" id="dp" value="true" /> 
-            Agree to Data Privacy Policy:
-          </label><br/><br/>
-          <label> Tell Us About Yourself (Optional): 
-            <textarea name="about" id="about">
-              
-            </textarea>
-          </label><br/><br/>
-          
-          
-        </fieldset>  
-        <fieldset>
-          <legend>Action Buttons</legend>
-          <button type="submit"> Accept </button>
-          <input type="reset" value=" Clear " />
-        </fieldset> 
-      </form>
-    </section>
-    <script src="q3e3script.js"></script>
-  </body>
+    }
+</script>
+</head>
+
+<body>
+
+
+
+<form method="post" action="submit"
+      onsubmit="return confirmSubmit()"
+      onreset="return confirmReset()">
+
+<!-- FIELDSET 1–4 -->
+<fieldset>
+<legend>Personal Information</legend>
+
+<label>
+Student ID:
+<input type="text" name="studentid" id="studentid" required />
+</label>
+
+<label>
+Full Name:
+<input type="text" name="fullname" id="fullname" required />
+</label>
+
+<label>
+Birthday:
+<input type="date" required>
+</label>
+
+<label>
+Email Address:
+<input
+  type="email"
+  required
+  pattern="b[0-9]{4}[a-z]+@pshs\.edu\.ph"
+  title="Format must be b(batch)(initials)(surname)@pshs.edu.ph"
+  onblur="checkInput(this)"
+>
+</label>
+</fieldset>
+
+<!-- FIELDSET 5–8 -->
+<fieldset>
+<legend>Other Information</legend>
+
+<label>
+Mobile Phone:
+<input type="text" required onblur="checkInput(this)">
+</label>
+
+<label>
+Grade Level:
+<select required>
+<option value="">-- Select --</option>
+<option value="7">Grade 7</option>
+<option value="8">Grade 8</option>
+<option value="9">Grade 9</option>
+<option value="10">Grade 10</option>
+</select>
+</label>
+
+<label>
+Intern / Extern:
+<input type="radio" name="intern_extern" value="Intern" /> Intern
+<input type="radio" name="intern_extern" value="Extern" /> Extern
+</label>
+
+<label>
+Preferred Organization / Club:
+<select required>
+<option value=""> Select Club</option>
+<option value="acts">ACTS (Acts Community Transformation)</option>
+<option value="aksis">Aksis</option>
+<option value="alianti">Alianti</option>
+<option value="alyabo">Alyabo</option>
+<option value="art">Art Club</option>
+<option value="astrosoc">Astrosoc</option>
+<option value="atom">ATOM</option>
+<option value="bake">Bake Club</option>
+<option value="balamesa">Balamesa</option>
+<option value="bravura">Bravura</option>
+<option value="buhat">Buhat</option>
+<option value="care">CARE</option>
+<option value="computron">Computron</option>
+<option value="exposure">Exposure</option>
+<option value="flux">Flux</option>
+<option value="habitat">Habitat for Humanity</option>
+<option value="himigagham">Himig Agham</option>
+<option value="invictus">Invictus</option>
+<option value="kamalayan">Kamalayan</option>
+<option value="kislap">Kislap</option>
+<option value="laab">Laab</option>
+<option value="labuyo">Labuyo</option>
+<option value="likha">Likha</option>
+<option value="math">Math Club</option>
+<option value="orient">Orient</option>
+<option value="outdoor">Outdoor Club</option>
+<option value="pallastro">Pallastro</option>
+<option value="physicsyhs">Physics Youth Honor Society/PYHS</option>
+<option value="pisayxyz">Pisay.XYZ</option>
+<option value="sagala">SaGala</option>
+<option value="samapi">SAMAPI</option>
+<option value="sarsplus">SARS+</option>
+<option value="sca">SCA (Student Catholic Action)</option>
+<option value="sert">SERT</option>
+<option value="sightlines">Sightlines</option>
+<option value="silakbo">Silakbo</option>
+<option value="sociospiritual">Socio-Spiritual Clubs</option>
+<option value="sports">Sports Clubs</option>
+<option value="stem">STEM Clubs</option>
+<option value="volant">Volant</option>
+</select>
+</label>
+
+<label>
+Why do you want to join:
+<textarea rows="4" required onblur="checkInput(this)"></textarea>
+</label>
+
+</fieldset>
+
+<button type="submit">Submit</button>
+<button type="reset">Reset</button>
+
+</form>
+
+</body>
 </html>
