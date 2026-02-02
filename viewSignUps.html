@@ -2,13 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>View Club Sign-Ups</title>
+<title>Show List of Students Who Signed-Up</title>
 
 <style>
     body {
         font-family: Arial, sans-serif;
-        background: #eef;
-        padding: 20px;
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 5px;
+    }
+
+    h3 {
+        margin-top: 0;
+        font-weight: normal;
+    }
+
+    a {
+        color: blue;
+        text-decoration: underline;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    select {
+        padding: 6px;
+        font-size: 14px;
+        margin-left: 10px;
     }
 
     table {
@@ -18,13 +40,18 @@
     }
 
     th, td {
-        border: 1px solid #999;
+        border: 1px solid #000;
         padding: 8px;
         text-align: left;
     }
 
     th {
-        background: #4e8cbc;
+        background-color: #0a1e8a;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #0a1e8a;
         color: white;
     }
 
@@ -32,13 +59,10 @@
         margin-top: 20px;
         font-weight: bold;
     }
-
-    button {
-        margin-top: 15px;
-        padding: 8px 12px;
-    }
 </style>
 
+<!-- hi maam aline this took me an unimaginably long time, ok thats a bit much but a long time nonetheless -->
+    
 <script>
     let allSignups = [];
 
@@ -48,6 +72,7 @@
         if (!data) {
             document.getElementById("output").innerHTML =
                 "<p class='message'>No sign-ups found.</p>";
+            document.getElementById("total").textContent = "Total Signup : 0";
             return;
         }
 
@@ -55,36 +80,46 @@
         displaySignups("ALL");
     }
 
+    // Display sign-ups based on selected club
     function displaySignups(club) {
         let filtered = allSignups;
 
+        // Filter only when a specific club is chosen
         if (club !== "ALL") {
             filtered = allSignups.filter(s => s.club === club);
         }
 
+        // If no matching sign-ups
         if (filtered.length === 0) {
             document.getElementById("output").innerHTML =
                 "<p class='message'>No sign-ups for this club.</p>";
-            document.getElementById("total").textContent = "Total Sign-ups: 0";
+            document.getElementById("total").textContent = "Total Signup : 0";
             return;
         }
 
+        // Build table output
         let html = `
         <table>
             <tr>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Grade</th>
                 <th>Club</th>
+                <th>ID</th>
+                <th>Fullname</th>
+                <th>Grade</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Intern|Extern</th>
             </tr>`;
 
         filtered.forEach(s => {
             html += `
             <tr>
+                <td>${s.club}</td>
                 <td>${s.studentId}</td>
                 <td>${s.fullName}</td>
-                <td>${s.grade}</td>
-                <td>${s.club}</td>
+                <td>Grade ${s.grade}</td>
+                <td>${s.email}</td>
+                <td>${s.phone}</td>
+                <td>${s.status}</td>
             </tr>`;
         });
 
@@ -92,68 +127,42 @@
 
         document.getElementById("output").innerHTML = html;
         document.getElementById("total").textContent =
-            "Total Sign-ups: " + filtered.length;
+            "Total Signup : " + filtered.length;
     }
 </script>
 </head>
 
 <body onload="loadSignups()">
 
-<h2>Club Sign-Ups</h2>
+<h1>Show List of Students Who Signed-Up</h1>
+<h3>by AL Mendoza</h3>
+
+<a href="3rdGradedExercise.html">Back to Signup</a>
+
+<br>
 
 <label>
-Filter by Club:
+Select Your Club
 <select onchange="displaySignups(this.value)">
-<option value="ALL">ALL</option>
-<option value=""> Select Club</option>
-<option value="acts">ACTS (Acts Community Transformation)</option>
-<option value="aksis">Aksis</option>
-<option value="alianti">Alianti</option>
-<option value="alyabo">Alyabo</option>
-<option value="art">Art Club</option>
-<option value="astrosoc">Astrosoc</option>
-<option value="atom">ATOM</option>
-<option value="bake">Bake Club</option>
-<option value="balamesa">Balamesa</option>
-<option value="bravura">Bravura</option>
-<option value="buhat">Buhat</option>
-<option value="care">CARE</option>
-<option value="computron">Computron</option>
-<option value="exposure">Exposure</option>
-<option value="flux">Flux</option>
-<option value="habitat">Habitat for Humanity</option>
-<option value="himigagham">Himig Agham</option>
-<option value="invictus">Invictus</option>
-<option value="kamalayan">Kamalayan</option>
-<option value="kislap">Kislap</option>
-<option value="laab">Laab</option>
-<option value="labuyo">Labuyo</option>
-<option value="likha">Likha</option>
-<option value="math">Math Club</option>
-<option value="orient">Orient</option>
-<option value="outdoor">Outdoor Club</option>
-<option value="pallastro">Pallastro</option>
-<option value="physicsyhs">Physics Youth Honor Society/PYHS</option>
-<option value="pisayxyz">Pisay.XYZ</option>
-<option value="sagala">SaGala</option>
-<option value="samapi">SAMAPI</option>
-<option value="sarsplus">SARS+</option>
-<option value="sca">SCA (Student Catholic Action)</option>
-<option value="sert">SERT</option>
-<option value="sightlines">Sightlines</option>
-<option value="silakbo">Silakbo</option>
-<option value="sociospiritual">Socio-Spiritual Clubs</option>
-<option value="sports">Sports Clubs</option>
-<option value="stem">STEM Clubs</option>
-<option value="volant">Volant</option>
+    <option value="ALL">-- select an option --</option>
+    <option value="ACTS (Acts Community Transformation)">ACTS (Acts Community Transformation)</option>
+    <option value="Aksis">Aksis</option>
+    <option value="Alianti">Alianti</option>
+    <option value="Alyabo">Alyabo</option>
+    <option value="Art Club">Art Club</option>
+    <option value="Astrosoc">Astrosoc</option>
+    <option value="ATOM">ATOM</option>
+    <option value="Bake Club">Bake Club</option>
+    <option value="Himig Agham">Himig Agham</option>
+    <option value="Math Club">Math Club</option>
+    <option value="Sports Clubs">Sports Clubs</option>
+    <option value="STEM Clubs">STEM Clubs</option>
 </select>
 </label>
 
-<p id="total">Total Sign-ups: 0</p>
+<p id="total">Total Signup : 0</p>
 
 <div id="output"></div>
-
-<button onclick="window.location.href='3rdGradedExercise.html'">Back to Sign-Up Page</button>
 
 </body>
 </html>
