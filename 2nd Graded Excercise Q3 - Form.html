@@ -39,14 +39,12 @@
         margin-top: 4px;
     }
 
-    /* focus style */
     input:focus, select:focus, textarea:focus {
         border: 2px solid blue;
         outline: none;
         background-color: #eef;
     }
 
-    /* invalid on blur */
     .invalid {
         border: 2px solid red;
         background-color: #ffecec;
@@ -58,17 +56,18 @@
     }
 </style>
 
-<!--Hi maam, if you so happen to see this, this took quite a while to figure out and especially improve from my last submission -->
-
 <script>
+    // Ask user to confirm submission
     function confirmSubmit() {
         return confirm("Do you want to submit this application?");
     }
 
+    // Ask user to confirm reset
     function confirmReset() {
         return confirm("Do you want to clear all entered data?");
     }
 
+    // Simple input validation on blur
     function checkInput(el) {
         if (el.value.trim() === "") {
             el.classList.add("invalid");
@@ -76,60 +75,90 @@
             el.classList.remove("invalid");
         }
     }
+
+    // Save form data to localStorage
+    function saveSignup(event) {
+        event.preventDefault(); // Prevent page reload
+
+        if (!confirmSubmit()) return;
+
+        // Create an object for one signup
+        const signup = {
+            studentId: document.getElementById("studentid").value,
+            fullName: document.getElementById("fullname").value,
+            birthday: document.getElementById("birthday").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            grade: document.getElementById("grade").value,
+            status: document.querySelector('input[name="intern_extern"]:checked')?.value || "",
+            club: document.getElementById("club").value,
+            reason: document.getElementById("reason").value
+        };
+
+        // Retrieve existing signups if any
+        let signups = JSON.parse(localStorage.getItem("clubSignups"));
+
+        // Initialize if none exist
+        if (!signups) {
+            signups = [];
+        }
+
+        // Add new signup
+        signups.push(signup);
+
+        // Save back to localStorage
+        localStorage.setItem("clubSignups", JSON.stringify(signups));
+
+        alert("Signup saved successfully!");
+        document.getElementById("signupForm").reset();
+    }
+
+    // Go to view page
+    function viewSignups() {
+        window.location.href = "viewSignUps.html";
+    }
 </script>
 </head>
 
 <body>
 
+<form id="signupForm" onsubmit="saveSignup(event)" onreset="return confirmReset()">
 
-
-<form method="post" action="submit"
-      onsubmit="return confirmSubmit()"
-      onreset="return confirmReset()">
-
-<!-- FIELDSET 1–4 -->
 <fieldset>
 <legend>Personal Information</legend>
 
 <label>
 Student ID:
-<input type="text" name="studentid" id="studentid" required />
+<input type="text" id="studentid" required>
 </label>
 
 <label>
 Full Name:
-<input type="text" name="fullname" id="fullname" required />
+<input type="text" id="fullname" required>
 </label>
 
 <label>
 Birthday:
-<input type="date" required>
+<input type="date" id="birthday" required>
 </label>
 
 <label>
 Email Address:
-<input
-  type="email"
-  required
-  pattern="b[0-9]{4}[a-z]+@pshs\.edu\.ph"
-  title="Format must be b(batch)(initials)(surname)@pshs.edu.ph"
-  onblur="checkInput(this)"
->
+<input type="email" id="email" required onblur="checkInput(this)">
 </label>
 </fieldset>
 
-<!-- FIELDSET 5–8 -->
 <fieldset>
 <legend>Other Information</legend>
 
 <label>
 Mobile Phone:
-<input type="text" required onblur="checkInput(this)">
+<input type="text" id="phone" required onblur="checkInput(this)">
 </label>
 
 <label>
 Grade Level:
-<select required>
+<select id="grade" required>
 <option value="">-- Select --</option>
 <option value="7">Grade 7</option>
 <option value="8">Grade 8</option>
@@ -140,8 +169,8 @@ Grade Level:
 
 <label>
 Intern / Extern:
-<input type="radio" name="intern_extern" value="Intern" /> Intern
-<input type="radio" name="intern_extern" value="Extern" /> Extern
+<input type="radio" name="intern_extern" value="Intern"> Intern
+<input type="radio" name="intern_extern" value="Extern"> Extern
 </label>
 
 <label>
@@ -193,16 +222,15 @@ Preferred Organization / Club:
 
 <label>
 Why do you want to join:
-<textarea rows="4" required onblur="checkInput(this)"></textarea>
+<textarea id="reason" rows="4" required onblur="checkInput(this)"></textarea>
 </label>
-
 </fieldset>
 
 <button type="submit">Submit</button>
 <button type="reset">Reset</button>
+<button type="button" onclick="viewSignups()">View Sign-Ups</button>
 
 </form>
 
 </body>
 </html>
-
